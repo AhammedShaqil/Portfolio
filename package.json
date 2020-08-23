@@ -17,7 +17,8 @@
     "react-scroll-to-component": "^1.0.2",
     "react-sweet-progress": "^1.1.2",
     "react-typist": "^2.0.5",
-    "reactjs-percentage-circle": "^1.0.0"
+    "reactjs-percentage-circle": "^1.0.0",
+    "serve": "^11.3.2"
   },
   "scripts": {
     "dev": "react-scripts start",
