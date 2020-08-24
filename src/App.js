@@ -17,7 +17,6 @@ import Typist from 'react-typist';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import scrollToComponent from 'react-scroll-to-component';
-import './index.css';
 
 var skills = [
   {
@@ -65,32 +64,60 @@ var skills = [
 ]
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      showMobileMenu: false
+    }
+  }
   componentDidMount() {
-    window.addEventListener('scroll', this.handleHeaderSCroll)
+    window.addEventListener('scroll', this.handleHeaderScroll)
   }
 
-  handleHeaderSCroll = () => {
+  handleHeaderScroll = () => {
     var header = document.getElementById("header-bar")
     header.classList.toggle("sticky", window.scrollY > 0)
   }
-  returnAboutMeAnchor = () => {
-
+  handleMenuToggle = () => {
+    this.setState((prevState) => {
+      return { showMobileMenu: !prevState.showMobileMenu }
+    })
+  }
+  handleCloseMobileMenu = () => {
+    this.setState({ showMobileMenu: false })
   }
   render() {
-    var value = 0.6
+    var { showMobileMenu } = this.state
     return (
       <div className="App">
         <header className="header" id="header-bar">
+          <div className="hamburger" onClick={() => this.handleMenuToggle()}>
+            <div className="hamburger__line"></div>
+            <div className="hamburger__line"></div>
+            <div className="hamburger__line"></div>
+          </div>
           <label className="header-logo">Portfolio</label>
-          <ul>
-            <li onClick={() => scrollToComponent(this.Home, { offset: 0, align: 'top', duration: 1500})}>Home</li>
-            <li onClick={() => scrollToComponent(this.About, { offset: -70, align: 'top', duration: 1500})}>About</li>
-            <li onClick={() => scrollToComponent(this.Contact, { offset: 0, align: 'bottom', duration: 1500})}>Contact</li>
-            <li onClick={() => scrollToComponent(this.Skills, { offset: -70, align: 'top', duration: 1500})}>Skills</li>
-            <li onClick={() => scrollToComponent(this.Projects, { offset: -70, align: 'top', duration: 1500})}>Experience</li>
-          </ul>
+          <div>
+            <ul className="header-options">
+              <li onClick={() => scrollToComponent(this.Home, { offset: 0, align: 'top', duration: 1500 })}>Home</li>
+              <li onClick={() => scrollToComponent(this.About, { offset: -70, align: 'top', duration: 1500 })}>About</li>
+              <li onClick={() => scrollToComponent(this.Contact, { offset: 0, align: 'bottom', duration: 1500 })}>Contact</li>
+              <li onClick={() => scrollToComponent(this.Skills, { offset: -70, align: 'top', duration: 1500 })}>Skills</li>
+              <li onClick={() => scrollToComponent(this.Projects, { offset: -70, align: 'top', duration: 1500 })}>Experience</li>
+            </ul>
+          </div>
         </header>
-        <section className="home"ref={(section) => { this.Home = section; }}>
+        <section className={showMobileMenu ? "sideDrawer open" : "sideDrawer"}>
+          <ul>
+            <li onClick={() => scrollToComponent(this.Home, { offset: 0, align: 'top', duration: 1500 })}>Home</li>
+            <li onClick={() => scrollToComponent(this.About, { offset: -70, align: 'top', duration: 1500 })}>About</li>
+            <li onClick={() => scrollToComponent(this.Contact, { offset: 0, align: 'bottom', duration: 1500 })}>Contact</li>
+            <li onClick={() => scrollToComponent(this.Skills, { offset: -70, align: 'top', duration: 1500 })}>Skills</li>
+            <li onClick={() => scrollToComponent(this.Projects, { offset: -70, align: 'top', duration: 1500 })}>Experience</li>
+          </ul>
+        </section>
+        {showMobileMenu && <section className="blur-effect" onClick={() => this.handleCloseMobileMenu()}></section>}
+        <section className="home" ref={(section) => { this.Home = section; }}>
           <img src={homepageImage} />
           <div className="home-typist">
             <Typist cursor={{ show: false }}>
@@ -102,7 +129,7 @@ class App extends Component {
             </Typist>
           </div>
         </section>
-        <section className="about-me"ref={(section) => { this.About = section; }}>
+        <section className="about-me" ref={(section) => { this.About = section; }}>
           <div className="section-header"><label>About me</label></div>
           <div className="content">
             <div className="content-left">
@@ -115,7 +142,7 @@ class App extends Component {
             </div>
           </div>
         </section>
-        <section className="black-container"ref={(section) => { this.Projects = section; }}>
+        <section className="black-container" ref={(section) => { this.Projects = section; }}>
           <div className="gallery-wrapper">
             <div className="section-header white-header"><label>Projects</label></div>
             <div className="gallery">
@@ -140,7 +167,7 @@ class App extends Component {
             </div>
           </div>
         </section>
-        <section className="skills-container"ref={(section) => { this.Skills = section; }}>
+        <section className="skills-container" ref={(section) => { this.Skills = section; }}>
           <div className="section-header skills-header"><label>Skills</label></div>
           {skills.map((item, i) => (
             <div key={i} className="skills-item">
@@ -160,7 +187,7 @@ class App extends Component {
             </div>
           ))}
         </section>
-        <section className="contact-container black-container"ref={(section) => { this.Contact = section; }}>
+        <section className="contact-container black-container" ref={(section) => { this.Contact = section; }}>
           <div className="section-header contact-header"><label>Contact me</label></div>
           <div className="contact-wrapper">
             <div className="contact-left">
@@ -198,7 +225,7 @@ class App extends Component {
               </div>
             </div>
           </div>
-          <span className="footer">This portfolio site was made by Ahammed Shaqil using React js library &#169; 2020 </span>
+          <span className="footer"> &#169; 2020 Ahammed Shaqil </span>
         </section>
       </div>
     );
